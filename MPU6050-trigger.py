@@ -1,4 +1,5 @@
-#!/usr/bin/env python
+#!/usr/bin/python
+# -*- coding: utf8 -*-
 
 from mpu6050 import mpu6050
 from time import sleep
@@ -16,7 +17,7 @@ def next():
     process = subprocess.Popen(["/usr/local/bin/volumio", "status"], stdout=subprocess.PIPE)
     bla = json.load(process.stdout)
 
-    print(bla['status'])
+    # print(bla['status'])
     if bla['status'] != "play":
         return
     logging.info("next")
@@ -27,7 +28,7 @@ def prev():
     process = subprocess.Popen(["/usr/local/bin/volumio", "status"], stdout=subprocess.PIPE)
     bla = json.load(process.stdout)
 
-    print(bla['status'])
+    # print(bla['status'])
     if bla['status'] != "play":
         return
 
@@ -79,7 +80,7 @@ while True:
     # print("ly2: " + str(lastY2))
     # print(" ly: " + str(lastY))
     # print("  y: " + str(currentY))
-    print("  x: " + str(currentX))
+    # print("  x: " + str(currentX))
     # print("dy3: " + str(deltaY3))
     # print("dy2: " + str(deltaY2))
     # print(" dy: " + str(deltaY))
