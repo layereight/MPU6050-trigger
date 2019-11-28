@@ -12,29 +12,33 @@ import json
 logging.config.fileConfig(os.path.dirname(__file__) + '/logging.ini')
 logging.info("Start")
 
+DEVNULL = open(os.devnull, 'wb')
+
+
+def volumio_status():
+    process = subprocess.Popen(["/usr/local/bin/volumio", "status"], stdout=subprocess.PIPE)
+    return json.load(process.stdout)
+
 
 def next():
-    process = subprocess.Popen(["/usr/local/bin/volumio", "status"], stdout=subprocess.PIPE)
-    bla = json.load(process.stdout)
+    volumio = volumio_status()
 
     # print(bla['status'])
-    if bla['status'] != "play":
+    if volumio['status'] != "play":
         return
     logging.info("next")
-    subprocess.call(['volumio', 'next'], shell=False)
+    subprocess.call(['volumio', 'next'], shell=False, stdout=DEVNULL, stderr=DEVNULL)
 
 
 def prev():
-    process = subprocess.Popen(["/usr/local/bin/volumio", "status"], stdout=subprocess.PIPE)
-    bla = json.load(process.stdout)
-
+    volumio = volumio_status()
     # print(bla['status'])
-    if bla['status'] != "play":
+    if volumio['status'] != "play":
         return
 
     logging.info("prev")
-    subprocess.call(['volumio', 'previous'], shell=False)
-    subprocess.call(['volumio', 'previous'], shell=False)
+    subprocess.call(['volumio', 'previous'], shell=False, stdout=DEVNULL, stderr=DEVNULL)
+    subprocess.call(['volumio', 'previous'], shell=False, stdout=DEVNULL, stderr=DEVNULL)
 
 
 sensor = mpu6050(0x68)
