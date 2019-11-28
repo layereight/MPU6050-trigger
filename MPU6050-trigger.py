@@ -48,6 +48,7 @@ lastGyroX = gyro_data['x']
 lastGyroY = gyro_data['y']
 lastGyroZ = gyro_data['z']
 lastY = accel_data['y']
+lastX = accel_data['x']
 # lastY2 = lastY
 # lastY3 = lastY2
 threshold = 40.0
@@ -59,8 +60,8 @@ while True:
 
 
 
-    # currentX = accel_data['x']
-    currentY = accel_data['y']
+    currentX = accel_data['x']
+    # currentY = accel_data['y']
     # currentZ = accel_data['z']
 
     gyroX = gyro_data['x'] + 12# * gyro_data['x']
@@ -77,7 +78,8 @@ while True:
     # print("ly3: " + str(lastY3))
     # print("ly2: " + str(lastY2))
     # print(" ly: " + str(lastY))
-    print("  y: " + str(currentY))
+    # print("  y: " + str(currentY))
+    print("  x: " + str(currentX))
     # print("dy3: " + str(deltaY3))
     # print("dy2: " + str(deltaY2))
     # print(" dy: " + str(deltaY))
@@ -101,11 +103,11 @@ while True:
     #     event = "right"
 
     # if gyroZ > threshold and lastGyroZ < threshold and gyroY < 120 and gyroX < 120:
-    if currentY < threshold_left and lastY > threshold_left and gyroY < 120:# and gyroX < 120:
+    if currentX < threshold_left and lastX > threshold_left and gyroX < 120:# and gyroX < 120:
         event = "left"
         prev()
     # elif gyroZ < -threshold and lastGyroZ > -threshold and gyroY < 120 and gyroX < 120:
-    elif currentY > threshold_right and lastY < threshold_right and gyroY < 120:# and gyroX < 120:
+    elif currentX > threshold_right and lastX < threshold_right and gyroX < 120:# and gyroX < 120:
         event = "right"
         next()
     #
@@ -124,7 +126,8 @@ while True:
 
     # lastY3 = lastY2
     # lastY2 = lastY
-    lastY = currentY
+    # lastY = currentY
+    lastX = currentX
 
     # print("\033[F\033[F\033[F\033[F\033[F\033[F\033[F\033[F\033[F")
 
