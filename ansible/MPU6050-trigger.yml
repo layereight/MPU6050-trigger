@@ -1,0 +1,80 @@
+---
+#
+# typical run:
+#
+# ansible-playbook -i inventory MPU6050-trigger.yml
+#
+#
+
+- name: Install prerequisite software
+  hosts: volumio
+  gather_facts: false
+  tags: [ prerequisite_software ]
+
+  vars:
+
+    debian_packages:
+      - python-dev
+      - python-pip
+      - vim
+
+    python_packages:
+      - smbus
+      - mpu6050-raspberrypi
+
+  tasks:
+
+    - name: "Run apt-get update if cache is older than a week"
+      become: yes
+      apt:
+        update_cache: yes
+        cache_valid_time: 604800 # 1 week = 7 * 24 * 3600 seconds
+
+    - name: "Install prerequisite debian packages"
+      become: yes
+      apt:
+        name: "{{ debian_packages }}"
+
+    - name: "Install prerequisite pip packages"
+      become: yes
+      pip:
+        name: "{{ python_packages }}"
+
+- name: Clone MPU6050-trigger from github
+  hosts: volumio
+  gather_facts: false
+  tags: [ clone ]
+
+  vars:
+
+    target_dir: "devel/MPU6050-trigger"
+
+  tasks:
+
+    - name: Create devel directory
+      file:
+        path: devel
+        state: directory
+
+    - name: Clone MPU6050-trigger from github
+      git:
+        repo: "https://github.com/layereight/MPU6050-trigger.git"
+        dest: "{{ target_dir }}"
+
+- name: Install MPU6050-trigger as systemd service
+  hosts: volumio
+  gather_facts: false
+  tags: [ systemd ]
+
+  vars:
+
+    mpu6050:
+      user: "volumio"
+      group: "volumio"
+      executable: "/home/volumio/devel/MPU6050-trigger/MPU6050-trigger.py"
+
+  roles:
+
+    - name: systemd
+      systemd_service: "MPU6050-trigger"
+      systemd_service_template: "MPU6050-trigger.service.j2"

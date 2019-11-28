@@ -1,0 +1,13 @@
+[Unit]
+Description=Motion detection vi MPU-6050
+After=network.target
+
+[Service]
+User={{ mpu6050.user }}
+Group={{ mpu6050.group }}
+Restart=always
+ExecStart={{ mpu6050.executable }}
+
+[Install]
+WantedBy=multi-user.target
+
