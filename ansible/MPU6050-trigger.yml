@@ -14,8 +14,8 @@
   vars:
 
     debian_packages:
-      - python-dev
-      - python-pip
+      - python3
+      - python3-pip
       - vim
 
     python_packages:
@@ -39,6 +39,7 @@
       become: yes
       pip:
         name: "{{ python_packages }}"
+        executable: pip3
 
 - name: Clone MPU6050-trigger from github
   hosts: volumio
@@ -60,6 +61,7 @@
       git:
         repo: "https://github.com/layereight/MPU6050-trigger.git"
         dest: "{{ target_dir }}"
+        force: yes
 
 - name: Install MPU6050-trigger as systemd service
   hosts: volumio

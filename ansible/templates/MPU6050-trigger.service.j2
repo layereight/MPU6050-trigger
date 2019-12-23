@@ -6,6 +6,7 @@ After=network.target
 User={{ mpu6050.user }}
 Group={{ mpu6050.group }}
 Restart=always
+Environment="LANG=en_US.UTF-8"
 ExecStart={{ mpu6050.executable }}
 
 [Install]
